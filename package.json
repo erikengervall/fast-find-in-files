@@ -1,0 +1,9 @@
+{
+  "name": "cpp",
+  "version": "1.0.0",
+  "description": "c++ playground",
+  "main": "index.js",
+  "repository": "https://github.com/erikengervall/c-.git",
+  "author": "Erik Engervall <erik.engervall@gmail.com>",
+  "license": "MIT"
+}

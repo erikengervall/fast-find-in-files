@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/erikengervall/c-.git",
   "author": "Erik Engervall <erik.engervall@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "cpp": "g++ -std=c++17 c/a.cpp -o c/a.out && c/a.out fixtures \"Lorem ipsum\""
+  }
 }

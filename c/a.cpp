@@ -116,12 +116,18 @@ void printResults(vector<FileOverview> &finalResults)
 
 int main(int argc, char **argv)
 {
-    const char *userQuery = "Lorem ipsum";
-    string userInputDirectory = "level0";
-    string strDirectory = (string)filesystem::current_path() + "/" + userInputDirectory;
+    if (argc < 3)
+    {
+        cout << "Missing input arguments" << endl;
+        exit(EXIT_FAILURE);
+    }
 
+    string rootDirName = argv[1];
+    const char *userQuery = argv[2];
+    string rootDirPath = (string)filesystem::current_path() + "/" + rootDirName;
+    cout << "rootDirPath: " << rootDirPath << endl;
     vector<string> filePaths;
-    getFiles(strDirectory.c_str(), filePaths);
+    getFiles(rootDirPath.c_str(), filePaths);
     vector<FileOverview> finalResults;
 
     for (auto i = filePaths.begin(); i != filePaths.end(); ++i) // https://stackoverflow.com/questions/10750057/how-to-print-out-the-contents-of-a-vector

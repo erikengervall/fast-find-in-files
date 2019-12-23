@@ -40,12 +40,12 @@ class Footer extends React.Component {
             )}
           </a>
           <div>
-            <a href="https://github.com/erikengervall/quick-find-in-files">GitHub</a>
+            <a href="https://github.com/erikengervall/fast-find-in-files">GitHub</a>
             <a
               className="github-button"
               href={this.props.config.repoUrl}
               data-icon="octicon-star"
-              data-count-href="/erikengervall/quick-find-in-files"
+              data-count-href="/erikengervall/fast-find-in-files"
               data-show-count="true"
               data-count-aria-label="# stargazers on GitHub"
               aria-label="Star this project on GitHub"
@@ -57,23 +57,23 @@ class Footer extends React.Component {
           <div style={styles.badgeWrapper}>
             <img
               alt="licence"
-              src="https://github.com/erikengervall/quick-find-in-files/workflows/Node.js%20CI/badge.svg"
+              src="https://github.com/erikengervall/fast-find-in-files/workflows/Node.js%20CI/badge.svg"
             />
 
-            <a href="https://www.npmjs.com/package/quick-find-in-files">
-              <img alt="npm downloads" src="https://img.shields.io/npm/dm/quick-find-in-files.svg" />
+            <a href="https://www.npmjs.com/package/fast-find-in-files">
+              <img alt="npm downloads" src="https://img.shields.io/npm/dm/fast-find-in-files.svg" />
             </a>
 
-            <a href="https://github.com/erikengervall/quick-find-in-files/blob/master/LICENSE">
-              <img alt="licence" src="https://img.shields.io/npm/l/quick-find-in-files.svg" />
+            <a href="https://github.com/erikengervall/fast-find-in-files/blob/master/LICENSE">
+              <img alt="licence" src="https://img.shields.io/npm/l/fast-find-in-files.svg" />
             </a>
 
-            <a href="https://www.npmjs.com/package/quick-find-in-files?activeTab=versions">
-              <img alt="npm" src="https://img.shields.io/npm/v/quick-find-in-files" />
+            <a href="https://www.npmjs.com/package/fast-find-in-files?activeTab=versions">
+              <img alt="npm" src="https://img.shields.io/npm/v/fast-find-in-files" />
             </a>
 
-            <a href="https://snyk.io/test/github/erikengervall/quick-find-in-files">
-              <img alt="snyk" src="https://snyk.io/test/github/erikengervall/quick-find-in-files/badge.svg" />
+            <a href="https://snyk.io/test/github/erikengervall/fast-find-in-files">
+              <img alt="snyk" src="https://snyk.io/test/github/erikengervall/fast-find-in-files/badge.svg" />
             </a>
           </div>
         </section>

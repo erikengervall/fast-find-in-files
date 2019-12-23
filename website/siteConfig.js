@@ -12,9 +12,9 @@ const siteConfig = {
   title: 'Quick find in files', // Title for your website.
   tagline: 'Recursively searches all files in selected directory and sub-directories for text matches',
   url: 'https://erikengervall.github.io', // Your website URL
-  baseUrl: '/quick-find-in-files/', // Base URL for your project
+  baseUrl: '/fast-find-in-files/', // Base URL for your project
   organizationName: 'erikengervall',
-  projectName: 'quick-find-in-files', // Used for publishing and more
+  projectName: 'fast-find-in-files', // Used for publishing and more
 
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
@@ -66,8 +66,8 @@ const siteConfig = {
   cleanUrl: true,
 
   // Custom
-  repoUrl: 'https://github.com/erikengervall/quick-find-in-files',
-  npmUrl: 'https://www.npmjs.com/package/quick-find-in-files',
+  repoUrl: 'https://github.com/erikengervall/fast-find-in-files',
+  npmUrl: 'https://www.npmjs.com/package/fast-find-in-files',
 }
 
 module.exports = siteConfig

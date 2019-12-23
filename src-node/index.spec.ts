@@ -1,8 +1,8 @@
-import { quickFindInFiles } from './index'
+import { fastFindInFiles } from './index'
 
 describe('does it trabajo', () => {
   it('sure does', () => {
-    const result = quickFindInFiles('./fixtures', 'Curabitur mauris leo')
+    const result = fastFindInFiles('./fixtures', 'Curabitur mauris leo')
 
     expect(result).toMatchInlineSnapshot(`
       Array [

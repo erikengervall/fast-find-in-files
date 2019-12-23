@@ -1,34 +1,34 @@
 # Quick find in files
 
-`quick-find-in-files` recursively searches all files in selected directory and sub-directories for text matches. The library is built completely in c++ and exposes its functionality using [node-addon-api](https://github.com/nodejs/node-addon-api).
+`fast-find-in-files` recursively searches all files in selected directory and sub-directories for text matches. The library is built completely in c++ and exposes its functionality using [node-addon-api](https://github.com/nodejs/node-addon-api).
 
 <p align="center">
-  <img alt="quick-find-in-files logo" width="300px" src="./resources/img/logo.png">
+  <img alt="fast-find-in-files logo" width="300px" src="./resources/img/logo.png">
 </p>
 
 <br>
 <br>
 
 <p align="center">
-  <img alt="licence" src="https://github.com/erikengervall/quick-find-in-files/workflows/Node.js%20CI/badge.svg">
+  <img alt="licence" src="https://github.com/erikengervall/fast-find-in-files/workflows/Node.js%20CI/badge.svg">
 
-  <a href="https://www.npmjs.com/package/quick-find-in-files">
-    <img alt="npm downloads" src="https://img.shields.io/npm/dm/quick-find-in-files.svg?style=flat">
+  <a href="https://www.npmjs.com/package/fast-find-in-files">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dm/fast-find-in-files.svg?style=flat">
   </a>
-  <a href="https://github.com/erikengervall/quick-find-in-files/blob/master/LICENSE">
-    <img alt="licence" src="https://img.shields.io/npm/l/quick-find-in-files.svg?style=flat">
+  <a href="https://github.com/erikengervall/fast-find-in-files/blob/master/LICENSE">
+    <img alt="licence" src="https://img.shields.io/npm/l/fast-find-in-files.svg?style=flat">
   </a>
 <p>
 
 ## Example
 
 ```ts
-import { quickFindInFiles } from 'quick-find-in-files'
+import { fastFindInFiles } from 'fast-find-in-files'
 
 const directory = process.cwd()
 const needle = 'needle'
 
-const result = quickFindInFiles(directory, needle)
+const result = fastFindInFiles(directory, needle)
 
 console.log(result)
 // [
@@ -49,7 +49,7 @@ console.log(result)
 
 ## Documentation
 
-Learn more about `quick-find-in-files` on the [official website](https://erikengervall.github.io/quick-find-in-files).
+Learn more about `fast-find-in-files` on the [official website](https://erikengervall.github.io/fast-find-in-files).
 
 ## Contributing
 

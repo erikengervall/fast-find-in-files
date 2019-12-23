@@ -48,7 +48,7 @@ class HomeSplash extends React.Component {
           style={{ maxWidth: '350px', marginBottom: '50px' }}
           src={`${baseUrl}img/logo.png`}
           alt={siteConfig.title}
-          aria-label="https://github.com/erikengervall/quick-find-in-files"
+          aria-label="https://github.com/erikengervall/fast-find-in-files"
         />
 
         <small>{siteConfig.tagline}</small>

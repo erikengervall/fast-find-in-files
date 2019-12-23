@@ -1,7 +1,7 @@
 {
-  "name": "quick-find-in-files",
+  "name": "fast-find-in-files",
   "version": "0.0.1",
-  "description": "quick-find-in-files recursively searches sub-directories for needle matches",
+  "description": "fast-find-in-files recursively searches sub-directories for needle matches",
   "keywords": [
     "quick",
     "find",
@@ -16,10 +16,10 @@
     "dist/**/*",
     "binding.gyp"
   ],
-  "repository": "https://github.com/erikengervall/quick-find-in-files.git",
-  "homepage": "https://erikengervall.github.io/quick-find-in-files/",
+  "repository": "https://github.com/erikengervall/fast-find-in-files.git",
+  "homepage": "https://erikengervall.github.io/fast-find-in-files/",
   "bugs": {
-    "url": "https://github.com/erikengervall/quick-find-in-files/issues"
+    "url": "https://github.com/erikengervall/fast-find-in-files/issues"
   },
   "author": "Erik Engervall <erik.engervall@gmail.com>",
   "license": "MIT",

@@ -9,13 +9,13 @@ interface QueryHit {
   offset: number
 }
 
-interface QuickFindInFiles {
+interface fastFindInFiles {
   filePath: string
   totalHits: number
   queryHits: QueryHit[]
 }
 
-const bindingWrapper = (directory: string, needle: string): QuickFindInFiles[] => {
+const bindingWrapper = (directory: string, needle: string): fastFindInFiles[] => {
   if (!directory) {
     throw new TypeError('Invalid input: Missing directory')
   }
@@ -26,4 +26,4 @@ const bindingWrapper = (directory: string, needle: string): QuickFindInFiles[] =
   return binding.exportedFn(directory, needle)
 }
 
-export { bindingWrapper as quickFindInFiles }
+export { bindingWrapper as fastFindInFiles }

@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "quick-find-in-files recursively searches sub-directories for needle matches",
+    "tagline": "fast-find-in-files recursively searches sub-directories for needle matches",
     "docs": {
       "getting-started": {
         "title": "Getting Started",

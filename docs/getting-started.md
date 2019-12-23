@@ -7,12 +7,12 @@ sidebar_label: Getting Started
 ## Example
 
 ```ts
-import { quickFindInFiles } from 'quick-find-in-files'
+import { fastFindInFiles } from 'fast-find-in-files'
 
 const directory = process.cwd()
 const needle = 'needle'
 
-const result = quickFindInFiles(directory, needle)
+const result = fastFindInFiles(directory, needle)
 
 console.log(result)
 // [

@@ -1,9 +1,9 @@
-# Quick find in files
+# Fast find in files
 
 `fast-find-in-files` recursively searches all files in selected directory and sub-directories for text matches. The library is built completely in c++ and exposes its functionality using [node-addon-api](https://github.com/nodejs/node-addon-api).
 
 <p align="center">
-  <img alt="fast-find-in-files logo" width="300px" src="./resources/img/logo.png">
+  <img alt="fast-find-in-files logo" width="300px" src="https://raw.githubusercontent.com/erikengervall/fast-find-in-files/resources/img/logo.png">
 </p>
 
 <br>

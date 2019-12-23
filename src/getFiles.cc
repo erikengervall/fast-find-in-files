@@ -7,7 +7,7 @@
 #include "superSearch.h"
 
 bool isOSDir(char const *dirName) {
-    bool isOSDirectory = strncmp(dirName, ".", 1) == 0 || strncmp(dirName, "..", 2) == 0;
+    bool isOSDirectory = std::strncmp(dirName, ".", 1) == 0 || std::strncmp(dirName, "..", 2) == 0;
     return isOSDirectory;
 }
 

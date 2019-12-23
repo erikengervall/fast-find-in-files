@@ -7,7 +7,7 @@
 #include "queryFile.h"
 #include "superSearch.h"
 
-std::string superSearch(std::string rootDirName, char const *userQuery) {
+std::vector<Result> superSearch(std::string rootDirName, char const *userQuery) {
     std::vector<std::string> filePaths;
     getFiles(rootDirName.c_str(), filePaths);
     std::vector<Result> result;
@@ -18,7 +18,7 @@ std::string superSearch(std::string rootDirName, char const *userQuery) {
         queryFile(*i, userQuery, result);
     }
 
-    printResults(result);
+    if (DEV) printResults(result);
 
-    return "ran pretty good i'd say :-D";
+    return result;
 }

@@ -10,7 +10,7 @@ const superSearchWrapper = (
 };
 
 if (process.env.CLI) {
-  console.log(superSearchWrapper());
+  console.log(JSON.stringify(superSearchWrapper(), null, 2));
 }
 
 module.exports = {

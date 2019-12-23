@@ -2,8 +2,6 @@
 
 #include <string>
 
-std::string superSearch(std::string rootDirName, char const *userQuery);
-
 struct QueryHit {
     std::string line;
     int lineNumber;
@@ -15,3 +13,5 @@ struct Result {
     int totalHits;
     std::vector<QueryHit> queryHits;
 };
+
+std::vector<Result> superSearch(std::string rootDirName, char const *userQuery);

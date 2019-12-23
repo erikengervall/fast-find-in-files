@@ -9,13 +9,13 @@ interface QueryHit {
   offset: number
 }
 
-interface fastFindInFiles {
+interface FastFindInFiles {
   filePath: string
   totalHits: number
   queryHits: QueryHit[]
 }
 
-const bindingWrapper = (directory: string, needle: string): fastFindInFiles[] => {
+const bindingWrapper = (directory: string, needle: string): FastFindInFiles[] => {
   if (!directory) {
     throw new TypeError('Invalid input: Missing directory')
   }

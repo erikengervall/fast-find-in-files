@@ -30,4 +30,9 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
   },
+  overrides: [
+    {
+      files: ['./src-node/*.ts'],
+    },
+  ],
 }

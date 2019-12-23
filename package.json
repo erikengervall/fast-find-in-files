@@ -25,6 +25,7 @@
   "license": "MIT",
   "gypfile": true,
   "scripts": {
+    "install": "yarn prep && node-gyp rebuild",
     "clean": "rimraf node_modules build dist",
     "prep": "yarn && yarn build",
     "build": "tsc",

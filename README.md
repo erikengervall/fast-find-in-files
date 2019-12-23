@@ -1,6 +1,6 @@
 # Quick find in files
 
-Quickly find text in files. `quick-find-in-files` recursively searches sub-directories in a high-performance manner by leveraging the speed of c++.
+`quick-find-in-files` recursively searches all files in selected directory and sub-directories for text matches. The library is built completely in c++ and exposes its functionality using [node-addon-api](https://github.com/nodejs/node-addon-api).
 
 <p align="center">
   <img alt="quick-find-in-files logo" width="300px" src="./resources/img/logo.png">
@@ -25,7 +25,26 @@ Quickly find text in files. `quick-find-in-files` recursively searches sub-direc
 ```ts
 import { quickFindInFiles } from 'quick-find-in-files'
 
-const result = quickFindInFiles(process.cwd(), 'needle')
+const directory = process.cwd()
+const needle = 'needle'
+
+const result = quickFindInFiles(directory, needle)
+
+console.log(result)
+// [
+//   {
+//     filePath: '<path>',
+//     queryHits: [
+//       {
+//         line: 'It would appear there is a <needle> on this particular line',
+//         lineNumber: 1,
+//         link: '<path>:1:28',
+//         offset: 28,
+//       },
+//     ],
+//     totalHits: 1,
+//   },
+// ]
 ```
 
 ## Documentation

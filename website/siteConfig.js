@@ -9,8 +9,8 @@
 // site configuration options.
 
 const siteConfig = {
-  title: 'quick-find-in-files', // Title for your website.
-  tagline: 'quick-find-in-files recursively searches sub-directories for needle matches',
+  title: 'Quick find in files', // Title for your website.
+  tagline: 'Recursively searches all files in selected directory and sub-directories for text matches',
   url: 'https://erikengervall.github.io', // Your website URL
   baseUrl: '/quick-find-in-files/', // Base URL for your project
   organizationName: 'erikengervall',

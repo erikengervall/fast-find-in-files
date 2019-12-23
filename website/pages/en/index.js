@@ -94,8 +94,12 @@ class Index extends React.Component {
         <Block layout="fourColumn">
           {[
             {
-              title: 'c++ addons',
-              content: 'Leverages c++ performance to optimize search',
+              title: 'Node.js Addon',
+              content: 'Completely built in c++ to maximize performance',
+            },
+            {
+              title: 'TypeScript',
+              content: 'Exposes its internal interface using TypeScript',
             },
           ]}
         </Block>

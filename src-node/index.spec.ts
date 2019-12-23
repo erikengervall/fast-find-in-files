@@ -1,8 +1,8 @@
-const { superSearchWrapper } = require("./index");
+import { quickFindInFiles } from './index'
 
-describe("does it trabajo", () => {
-  it("sure does", () => {
-    const result = superSearchWrapper("./fixtures", "Lorem");
+describe('does it trabajo', () => {
+  it('sure does', () => {
+    const result = quickFindInFiles('./fixtures', 'Lorem')
 
     expect(result).toMatchInlineSnapshot(`
       Array [
@@ -76,6 +76,6 @@ describe("does it trabajo", () => {
           "totalHits": 3,
         },
       ]
-    `);
-  });
-});
+    `)
+  })
+})

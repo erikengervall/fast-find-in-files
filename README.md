@@ -5,5 +5,7 @@ Quickly find text in files. `quick-find-in-files` recursively searched sub-direc
 ## Usage
 
 ```ts
-import { superSearch } from 'quick-find-in-files'
+import { quickFindInFiles } from 'quick-find-in-files'
+
+const result = quickFindInFiles(process.cwd(), 'needle')
 ```

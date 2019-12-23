@@ -2,7 +2,20 @@
 // @ts-ignore
 import binding from '../build/Release/binding.node'
 
-const bindingWrapper = (directory: string, needle: string) => {
+interface QueryHit {
+  link: string
+  line: string
+  lineNumber: number
+  offset: number
+}
+
+interface QuickFindInFiles {
+  filePath: string
+  totalHits: number
+  queryHits: QueryHit[]
+}
+
+const bindingWrapper = (directory: string, needle: string): QuickFindInFiles[] => {
   if (!directory) {
     throw new TypeError('Invalid input: Missing directory')
   }
@@ -10,9 +23,7 @@ const bindingWrapper = (directory: string, needle: string) => {
     throw new TypeError('Invalid input: Missing needle')
   }
 
-  const result = binding.exportedFn(directory, needle)
-
-  return result
+  return binding.exportedFn(directory, needle)
 }
 
 export { bindingWrapper as quickFindInFiles }

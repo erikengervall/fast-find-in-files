@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "superSearch",
+      "target_name": "binding",
       "cflags!": [ "-fno-exceptions" ],
       "cflags_cc!": [ "-fno-exceptions" ],
       "sources": [

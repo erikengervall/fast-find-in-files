@@ -36,4 +36,5 @@
 # Ignore Mac specific files
 .DS_Store
 build
+dist
 node_modules

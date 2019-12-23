@@ -2,10 +2,12 @@ const { superSearchWrapper } = require("./index");
 
 describe("does it trabajo", () => {
   it("sure does", () => {
-    expect(superSearchWrapper()).toMatchInlineSnapshot(`
+    const result = superSearchWrapper("./fixtures", "Lorem");
+
+    expect(result).toMatchInlineSnapshot(`
       Array [
         Object {
-          "filePath": "/Users/erik.engervall/dev/OSS/c-/fixtures/level0/0.txt",
+          "filePath": "./fixtures/level0/0.txt",
           "queryHits": Array [
             Object {
               "line": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque laoreet lobortis consequat. Mauris volutpat urna in sem ullamcorper porttitor. Aenean hendrerit sed nulla id iaculis. Nam eget dui quam. In congue ipsum velit, ut semper eros pulvinar sit amet. Integer quis purus vel magna aliquet mattis sit amet sit amet leo. In ac vulputate mauris, sed vehicula ante. Vestibulum in purus eu nisi molestie porta. Phasellus eget porttitor velit. In nec rhoncus orci, a aliquet quam. Vivamus porta leo vel imperdiet rhoncus.",
@@ -16,7 +18,7 @@ describe("does it trabajo", () => {
           "totalHits": 1,
         },
         Object {
-          "filePath": "/Users/erik.engervall/dev/OSS/c-/fixtures/level0/level1/level2/2.txt",
+          "filePath": "./fixtures/level0/level1/level2/2.txt",
           "queryHits": Array [
             Object {
               "line": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas consequat leo viverra magna lacinia, et venenatis arcu ultrices. Donec sit amet interdum ipsum. Donec vestibulum nibh quis lectus hendrerit, ac tempus tortor ultrices. Nullam eros nisl, auctor et ultricies vel, consequat sit amet nisl. Curabitur scelerisque pulvinar eros non dapibus. Duis rhoncus felis diam, venenatis maximus erat tempor sed. Vivamus feugiat, quam at fringilla viverra, nisi lacus efficitur nunc, at luctus ligula massa eu metus. Maecenas consequat commodo metus vel mattis.",
@@ -32,7 +34,7 @@ describe("does it trabajo", () => {
           "totalHits": 2,
         },
         Object {
-          "filePath": "/Users/erik.engervall/dev/OSS/c-/fixtures/level0/level1/1.txt",
+          "filePath": "./fixtures/level0/level1/1.txt",
           "queryHits": Array [
             Object {
               "line": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus gravida blandit erat, a elementum elit fermentum quis. Suspendisse commodo posuere tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque urna nisi, convallis sed urna at, lacinia sodales dui. Vivamus orci lorem, volutpat ac ligula et, placerat imperdiet nisl. Morbi eu molestie leo. Donec nisl nulla, dictum id consectetur eu, porta et velit. Aenean a congue urna, nec semper velit. Proin cursus pellentesque nunc, viverra pretium diam hendrerit consectetur.",
@@ -53,7 +55,7 @@ describe("does it trabajo", () => {
           "totalHits": 3,
         },
         Object {
-          "filePath": "/Users/erik.engervall/dev/OSS/c-/fixtures/level0/level1/level2.1/2.1.txt",
+          "filePath": "./fixtures/level0/level1/level2.1/2.1.txt",
           "queryHits": Array [
             Object {
               "line": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi porta venenatis cursus. Vivamus blandit malesuada bibendum. Vivamus bibendum neque id aliquet rhoncus. Pellentesque eget maximus dolor. Fusce porta augue nec sodales fermentum. Quisque faucibus metus quis nisl commodo, a posuere risus vehicula. Cras ut tellus ante. In rutrum pharetra nulla, maximus tempor nunc pellentesque non. Sed mattis egestas scelerisque. Proin suscipit vitae enim vel venenatis. Proin congue in ante ac tempus.",

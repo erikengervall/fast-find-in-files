@@ -37,5 +37,7 @@ void queryFile(std::string filePath, char const *query, std::vector<Result> &res
     }
 
     fileStream.close();
-    result.push_back(fileOverview);
+    if (fileOverview.totalHits > 0) {
+        result.push_back(fileOverview);
+    }
 }

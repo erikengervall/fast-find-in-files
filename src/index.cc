@@ -35,7 +35,7 @@ Napi::Array transform(std::vector<Result>& results, Napi::Env env) {
     return resultsAsNapi;
 };
 
-Napi::Array superSearchNapi(const Napi::CallbackInfo& info) {
+Napi::Array napiFunc(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
     std::string rootDirName = info[0].ToString();
     std::string userQuery = info[1].ToString();
@@ -47,9 +47,9 @@ Napi::Array superSearchNapi(const Napi::CallbackInfo& info) {
 }
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
-    exports.Set(Napi::String::New(env, "superSearch"), Napi::Function::New(env, superSearchNapi));
+    exports.Set(Napi::String::New(env, "exportedFn"), Napi::Function::New(env, napiFunc));
 
     return exports;
 }
 
-NODE_API_MODULE(superSearch, Init)
+NODE_API_MODULE(exportedFn, Init)

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 struct QueryHit {
     std::string line;
     int lineNumber;

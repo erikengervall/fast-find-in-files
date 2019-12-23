@@ -24,6 +24,7 @@ Napi::Array transform(std::vector<Result>& results, Napi::Env env) {
             QueryHit queryHit = queryHits[i];
 
             Napi::Object queryHitAsNapi = Napi::Object::New(env);
+            queryHitAsNapi.Set(Napi::String::New(env, "link"), queryHit.link);
             queryHitAsNapi.Set(Napi::String::New(env, "line"), queryHit.line);
             queryHitAsNapi.Set(Napi::String::New(env, "lineNumber"), queryHit.lineNumber);
             queryHitAsNapi.Set(Napi::String::New(env, "offset"), queryHit.offset);

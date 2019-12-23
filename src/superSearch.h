@@ -1,6 +1,7 @@
 #pragma once
 
 struct QueryHit {
+    std::string link;
     std::string line;
     int lineNumber;
     int offset;

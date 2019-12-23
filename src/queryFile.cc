@@ -26,7 +26,10 @@ void queryFile(std::string filePath, char const *query, std::vector<Result> &res
     while (getline(fileStream, line)) {
         lineNumber++;
         if ((offset = line.find(query, 0)) != std::string::npos) {
-            QueryHit queryHitDetails = {line, lineNumber, offset};
+            QueryHit queryHitDetails = {filePath + ":" + std::to_string(lineNumber) + ":" + std::to_string(offset),
+                                        line,
+                                        lineNumber,
+                                        offset};
             fileOverview.totalHits++;
             fileOverview.queryHits.push_back(queryHitDetails);
 

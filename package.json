@@ -14,7 +14,7 @@
   "main": "dist/index.js",
   "files": [
     "dist/**/*",
-    "build/**/*"
+    "binding.gyp"
   ],
   "repository": "https://github.com/erikengervall/quick-find-in-files.git",
   "homepage": "https://erikengervall.github.io/quick-find-in-files/",
@@ -44,6 +44,7 @@
     "eslint-plugin-no-only-tests": "^2.4.0",
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^24.9.0",
+    "lerna": "^3.19.0",
     "node-addon-api": "^2.0.0",
     "prettier": "^1.19.1",
     "prettier-eslint": "^9.0.1",

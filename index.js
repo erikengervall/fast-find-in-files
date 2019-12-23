@@ -1,8 +1,18 @@
-const superSearchModule = require("./build/Release/superSearch.node");
+const { superSearch } = require("./build/Release/superSearch.node");
 
-const rootDir = `${process.cwd()}/fixtures`;
-const query = "Lorem";
+const superSearchWrapper = (
+  rootDir = `${process.cwd()}/fixtures`,
+  query = "Lorem"
+) => {
+  const result = superSearch(rootDir, query);
 
-const result = superSearchModule.superSearch(rootDir, query);
+  return result;
+};
 
-console.log(result);
+if (process.env.CLI) {
+  console.log(superSearchWrapper());
+}
+
+module.exports = {
+  superSearchWrapper
+};

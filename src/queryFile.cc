@@ -16,8 +16,8 @@ void queryFile(std::string filePath, char const *query, std::vector<Result> &res
         exit(EXIT_FAILURE);
     }
 
-    std::vector<QueryHit> allQueryHitDetails;
-    Result fileOverview = {filePath, 0, allQueryHitDetails};
+    std::vector<QueryHit> queryHits;
+    Result fileOverview = {filePath, 0, queryHits};
 
     int lineNumber = 0;
     int offset;
@@ -29,7 +29,7 @@ void queryFile(std::string filePath, char const *query, std::vector<Result> &res
             // std::string notSuperLongLine = line.substr(0, 10);
             QueryHit queryHitDetails = {line, lineNumber, offset};
             fileOverview.totalHits++;
-            fileOverview.allQueryHitDetails.push_back(queryHitDetails);
+            fileOverview.queryHits.push_back(queryHitDetails);
 
             if (DEV)
                 std::cout << "found: " << offset << " -- " << line.substr(0, 10)

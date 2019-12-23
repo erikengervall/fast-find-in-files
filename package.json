@@ -7,8 +7,19 @@
   "author": "Erik Engervall <erik.engervall@gmail.com>",
   "license": "MIT",
   "gypfile": true,
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "dependencies": {
     "bindings": "^1.5.0",
     "node-addon-api": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/prettier": "^1.19.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1"
   }
 }

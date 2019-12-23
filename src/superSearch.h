@@ -13,5 +13,5 @@ struct QueryHit {
 struct Result {
     std::string filePath;
     int totalHits;
-    std::vector<QueryHit> allQueryHitDetails;
+    std::vector<QueryHit> queryHits;
 };

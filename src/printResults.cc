@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#ifdef _MSC_VER
+#include <string>
+#endif
 
 #include "printResults.h"
 #include "superSearch.h"

@@ -1,4 +1,10 @@
+#ifdef _MSC_VER
+#include <string>
+#include "dirent.h"
+#else
 #include <dirent.h>
+#endif
+
 #include <fstream>
 #include <iostream>
 #include <vector>

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <regex>
 
 #include "constants.h"
 #include "queryFile.h"
@@ -20,12 +21,20 @@ void queryFile(std::string filePath, char const *query, std::vector<Result> &res
     Result fileOverview = {filePath, 0, queryHits};
 
     int lineNumber = 0;
-    int offset;
     std::string line;
+
+    std::regex regexQuery(query, std::regex::extended);
 
     while (getline(fileStream, line)) {
         lineNumber++;
-        if ((offset = line.find(query, 0)) != std::string::npos) {
+
+        std::sregex_iterator iter(line.begin(), line.end(), regexQuery);
+        std::sregex_iterator end;
+
+        while (iter != end) {
+            std::smatch match = *iter;
+            int offset = match.position();
+
             QueryHit queryHitDetails = {filePath + ":" + std::to_string(lineNumber) + ":" + std::to_string(offset),
                                         line,
                                         lineNumber,
@@ -36,6 +45,8 @@ void queryFile(std::string filePath, char const *query, std::vector<Result> &res
             if (DEV)
                 std::cout << "found: " << offset << " -- " << line.substr(0, 10)
                           << std::endl;
+
+            ++iter;
         }
     }
 

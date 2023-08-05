@@ -15,7 +15,7 @@ interface FastFindInFiles {
   queryHits: QueryHit[]
 }
 
-const bindingWrapper = (directory: string, needle: string): FastFindInFiles[] => {
+const bindingWrapper = (directory: string, needle: string | RegExp): FastFindInFiles[] => {
   if (!directory) {
     throw new TypeError('Invalid input: Missing directory')
   }
@@ -23,7 +23,9 @@ const bindingWrapper = (directory: string, needle: string): FastFindInFiles[] =>
     throw new TypeError('Invalid input: Missing needle')
   }
 
-  return binding.exportedFn(directory, needle)
+  const needleStr = needle instanceof RegExp ? needle.source : needle
+
+  return binding.exportedFn(directory, needleStr)
 }
 
 export { bindingWrapper as fastFindInFiles }

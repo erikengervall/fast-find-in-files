@@ -19,6 +19,7 @@ const bindingWrapper = (directory: string, needle: string | RegExp): FastFindInF
   if (!directory) {
     throw new TypeError('Invalid input: Missing directory')
   }
+
   if (!needle) {
     throw new TypeError('Invalid input: Missing needle')
   }

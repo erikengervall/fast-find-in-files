@@ -1,6 +1,6 @@
 # Fast Find in Files
 
-`fast-find-in-files` recursively searches all files in selected directory and sub-directories for text matches using `RegExp`. The library is built completely in C++ and exposes its functionality using [node-addon-api](https://github.com/nodejs/node-addon-api).
+`fast-find-in-files` recursively searches all files in selected directory and sub-directories for text matches using partial string matching or regular expressions. The library is built entirely in C++ and exposes its functionality using [node-addon-api](https://github.com/nodejs/node-addon-api).
 
 <p align="center">
   <img alt="fast-find-in-files logo" width="300px" src="https://raw.githubusercontent.com/erikengervall/fast-find-in-files/master/resources/img/logo.png">

@@ -47,6 +47,31 @@ console.log(result)
 // ]
 ```
 
+## Development
+
+### Install dependencies
+
+```sh
+yarn install
+```
+
+### Build
+
+```sh
+yarn build
+```
+
+### Test
+
+```sh
+yarn test
+```
+
+## Release
+
+1. Bump version in `package.json` (create PR -> merge)
+2. Create a new release on GitHub. This will also create a tag which will trigger the CI to publish a new version to npm
+
 ## Documentation
 
 Learn more about `fast-find-in-files` on the [official website](https://erikengervall.github.io/fast-find-in-files).

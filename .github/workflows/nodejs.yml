@@ -69,6 +69,7 @@ jobs:
         run: |
           if [ ${IS_ALPHA} = true ]; then export NPM_TAG="--tag alpha"; fi
           if [ ${IS_BETA} = true ]; then export NPM_TAG="--tag beta"; fi
+          yarn init -y
           yarn prep
           yarn publish --access=public ${NPM_TAG}
 

@@ -2,14 +2,14 @@
 // @ts-ignore
 import binding from '../build/Release/binding.node'
 
-interface QueryHit {
+export interface QueryHit {
   link: string
   line: string
   lineNumber: number
   offset: number
 }
 
-interface FastFindInFiles {
+export interface FastFindInFiles {
   filePath: string
   totalHits: number
   queryHits: QueryHit[]

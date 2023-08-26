@@ -170,4 +170,68 @@ describe('fastFindInFiles', () => {
       ]
     `)
   })
+
+  it('works with options', () => {
+    const result = fastFindInFiles({
+      directory: './fixtures',
+      needle: 'Lorem ipsum',
+    })
+
+    expect(result).toHaveLength(5)
+    expect(result).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          filePath: './fixtures/level0/0.txt',
+        }),
+        expect.objectContaining({
+          filePath: './fixtures/level0/level1/1.txt',
+        }),
+        expect.objectContaining({
+          filePath: './fixtures/level0/level1/level2/2.txt',
+        }),
+        expect.objectContaining({
+          filePath: './fixtures/level0/level1/level2.1/2.1.txt',
+        }),
+        expect.objectContaining({
+          filePath: './fixtures/level0/level1/level2/level3/level3.1/3.1.md',
+        }),
+      ]),
+    )
+  })
+
+  it('works with exclude paths', () => {
+    const result = fastFindInFiles({
+      directory: './fixtures',
+      needle: 'Lorem ipsum',
+      excludePaths: ['./fixtures/level0/level1'],
+    })
+
+    expect(result).toHaveLength(1)
+    expect(result).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "filePath": "./fixtures/level0/0.txt",
+          "queryHits": Array [
+            Object {
+              "line": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque laoreet lobortis consequat. Mauris volutpat urna in sem ullamcorper porttitor. Aenean hendrerit sed nulla id iaculis. Nam eget dui quam. In congue ipsum velit, ut semper eros pulvinar sit amet. Integer quis purus vel magna aliquet mattis sit amet sit amet leo. In ac vulputate mauris, sed vehicula ante. Vestibulum in purus eu nisi molestie porta. Phasellus eget porttitor velit. In nec rhoncus orci, a aliquet quam. Vivamus porta leo vel imperdiet rhoncus.",
+              "lineNumber": 1,
+              "link": "./fixtures/level0/0.txt:1:0",
+              "offset": 0,
+            },
+          ],
+          "totalHits": 1,
+        },
+      ]
+    `)
+  })
+
+  it('throws with invalid input', () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore - testing invalid input
+    expect(() => fastFindInFiles()).toThrowErrorMatchingInlineSnapshot(`"Invalid input: Missing directory / options"`)
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore - testing invalid input
+    expect(() => fastFindInFiles('.')).toThrowErrorMatchingInlineSnapshot(`"Invalid input: Missing needle"`)
+  })
 })

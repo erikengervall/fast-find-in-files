@@ -2,4 +2,4 @@
 
 #include <vector>
 
-void getFiles(char const *directory, std::vector<std::string> &filePaths);
+void getFiles(char const *directory, std::vector<std::string> &filePaths, std::vector<std::string> &excludePaths);

@@ -38,10 +38,27 @@ Napi::Array transform(std::vector<Result>& results, Napi::Env env) {
 
 Napi::Array napiFunc(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
-    std::string rootDirName = info[0].ToString();
-    std::string userQuery = info[1].ToString();
+    std::string rootDirName;
+    std::string userQuery;
+    std::vector<std::string> excludePaths;
+    
+    Napi::Object queryObj = info[0].As<Napi::Object>();
+    rootDirName = queryObj.Get("directory").ToString();
+    userQuery = queryObj.Get("needle").ToString();
+    Napi::Value excludePathsValue = queryObj.Get("excludePaths");
+    if (excludePathsValue.IsArray()) {
+        Napi::Array excludePathsArray = excludePathsValue.As<Napi::Array>();
+        for (std::size_t i = 0; i < excludePathsArray.Length(); i++) {
+            Napi::Value excludePathValue = excludePathsArray.Get(i);
+            if (excludePathValue.IsString()) {
+                std::string excludePath = excludePathValue.ToString();
+                excludePaths.push_back(excludePath);
+            }
+        }
+    }
+    
 
-    std::vector<Result> results = superSearch(rootDirName, userQuery.c_str());
+    std::vector<Result> results = superSearch(rootDirName, userQuery.c_str(), excludePaths);
     Napi::Array resultsAsNapi = transform(results, env);
 
     return resultsAsNapi;

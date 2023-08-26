@@ -7,9 +7,9 @@
 #include "queryFile.h"
 #include "superSearch.h"
 
-std::vector<Result> superSearch(std::string rootDirName, char const *userQuery) {
+std::vector<Result> superSearch(std::string rootDirName, char const *userQuery, std::vector<std::string> excludePaths = {}) {
     std::vector<std::string> filePaths;
-    getFiles(rootDirName.c_str(), filePaths);
+    getFiles(rootDirName.c_str(), filePaths, excludePaths);
     std::vector<Result> result;
 
     // https://stackoverflow.com/questions/10750057/how-to-print-out-the-contents-of-a-vector

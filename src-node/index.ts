@@ -60,10 +60,6 @@ function fastFindInFiles(options: FastFindInFilesOptions): FastFindInFiles[] {
       if (excludeFolderPath.endsWith('/')) {
         throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must not end with "/"')
       }
-
-      if (!excludeFolderPath.startsWith('./')) {
-        throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must start with "./"')
-      }
     })
   }
 

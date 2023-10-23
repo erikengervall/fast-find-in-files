@@ -1,6 +1,6 @@
-# Fast find in files
+# Fast Find in Files
 
-`fast-find-in-files` recursively searches all files in selected directory and sub-directories for text matches. The library is built completely in C++ and exposes its functionality using [node-addon-api](https://github.com/nodejs/node-addon-api).
+`fast-find-in-files` recursively searches all files in selected directory and sub-directories for text matches using partial string matching or regular expressions. The library is built entirely in C++ and exposes its functionality using [node-addon-api](https://github.com/nodejs/node-addon-api).
 
 <p align="center">
   <img alt="fast-find-in-files logo" width="300px" src="https://raw.githubusercontent.com/erikengervall/fast-find-in-files/master/resources/img/logo.png">
@@ -26,7 +26,7 @@
 import { fastFindInFiles } from 'fast-find-in-files'
 
 const directory = process.cwd()
-const needle = 'needle'
+const needle = 'needle' // also supports string RegExp: 'needle*', and RegExp instances: new RegExp('needle*')
 
 const result = fastFindInFiles(directory, needle)
 
@@ -46,6 +46,31 @@ console.log(result)
 //   },
 // ]
 ```
+
+## Development
+
+### Install dependencies
+
+```sh
+yarn install
+```
+
+### Build
+
+```sh
+yarn build
+```
+
+### Test
+
+```sh
+yarn test
+```
+
+## Release
+
+1. Bump version in `package.json` (create PR -> merge)
+2. Create a new release on GitHub. This will also create a tag which will trigger the CI to publish a new version to npm
 
 ## Documentation
 

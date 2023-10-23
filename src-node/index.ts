@@ -51,7 +51,7 @@ function fastFindInFiles(options: FastFindInFilesOptions): FastFindInFiles[] {
       throw new TypeError('Invalid input: options.excludeFolderPaths must be an array')
     }
 
-    options.excludeFolderPaths.forEach(excludeFolderPath => {
+    options.excludeFolderPaths.forEach((excludeFolderPath) => {
       if (typeof excludeFolderPath !== 'string' || excludeFolderPath.length === 0) {
         throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must be nonempty string')
       }

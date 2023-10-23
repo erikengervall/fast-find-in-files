@@ -21,25 +21,30 @@ interface FastFindInFilesOptions {
   excludePaths?: string[]
 }
 
-function fastFindInFiles(options: FastFindInFilesOptions): FastFindInFiles[]
-function fastFindInFiles(directory: string, needle: string | RegExp): FastFindInFiles[]
-function fastFindInFiles(directory: string | FastFindInFilesOptions, needle?: string | RegExp): FastFindInFiles[] {
-  let options = directory
-
-  if (!directory) {
-    throw new TypeError('Invalid input: Missing directory / options')
+function fastFindInFiles(options: FastFindInFilesOptions): FastFindInFiles[] {
+  if (!options) {
+    throw new TypeError('Invalid input: Missing options')
   }
 
-  if (typeof directory === 'string') {
-    if (!needle) {
-      throw new TypeError('Invalid input: Missing needle')
+  if (typeof options.directory !== 'string' || options.directory.length === 0) {
+    throw new TypeError('Invalid input: Invalid or missing options.directory')
+  }
+
+  if ((typeof options.needle !== 'string' || options.needle.length === 0) && !(options.needle instanceof RegExp)) {
+    throw new TypeError('Invalid input: Invalid or missing options.needle')
+  }
+
+  if (options.excludePaths) {
+    if (!Array.isArray(options.excludePaths)) {
+      throw new TypeError('Invalid input: options.excludePaths must be an array')
     }
 
-    options = {
-      directory,
-      needle: typeof needle === 'string' ? needle : needle.source,
+    if (options.excludePaths.some(path => typeof path !== 'string' || path.length === 0)) {
+      throw new TypeError('Invalid input: options.excludePaths must be an array of strings')
     }
   }
+
+  options.needle = typeof options.needle === 'string' ? options.needle : options.needle.source
 
   return binding.exportedFn(options)
 }

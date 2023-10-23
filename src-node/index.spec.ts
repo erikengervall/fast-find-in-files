@@ -2,7 +2,7 @@ import { fastFindInFiles } from './index'
 
 describe('fastFindInFiles', () => {
   it('works with string', () => {
-    const result = fastFindInFiles('./fixtures', 'Curabitur mauris leo')
+    const result = fastFindInFiles({ directory: './fixtures', needle: 'Curabitur mauris leo' })
 
     expect(result).toMatchInlineSnapshot(`
       Array [
@@ -23,7 +23,7 @@ describe('fastFindInFiles', () => {
   })
 
   it('should find the two nested files with UUID "69a0d7b7-153b-497e-80e3-064cb40387b7"', () => {
-    const result = fastFindInFiles('./fixtures', '69a0d7b7-153b-497e-80e3-064cb40387b7')
+    const result = fastFindInFiles({ directory: './fixtures', needle: '69a0d7b7-153b-497e-80e3-064cb40387b7' })
 
     expect(result).toMatchInlineSnapshot(`
       Array [
@@ -56,13 +56,13 @@ describe('fastFindInFiles', () => {
   })
 
   it('should find the three UUIDs by RegExp', () => {
-    const result = fastFindInFiles(
-      './fixtures',
+    const result = fastFindInFiles({
+      directory: './fixtures',
       /**
        * @link https://stackoverflow.com/a/6640851
        */
-      new RegExp('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
-    )
+      needle: new RegExp('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
+    })
 
     expect(result).toHaveLength(3)
 
@@ -130,7 +130,7 @@ describe('fastFindInFiles', () => {
   })
 
   it('works with RegExp string', () => {
-    const result = fastFindInFiles('./fixtures', 'Curabitur m.* leo')
+    const result = fastFindInFiles({ directory: './fixtures', needle: 'Curabitur m.* leo' })
 
     expect(result).toMatchInlineSnapshot(`
       Array [
@@ -151,7 +151,7 @@ describe('fastFindInFiles', () => {
   })
 
   it('works with RegExp', () => {
-    const result = fastFindInFiles('./fixtures', new RegExp('Curabitur m.* leo'))
+    const result = fastFindInFiles({ directory: './fixtures', needle: new RegExp('Curabitur m.* leo') })
 
     expect(result).toMatchInlineSnapshot(`
       Array [
@@ -225,13 +225,18 @@ describe('fastFindInFiles', () => {
     `)
   })
 
-  it('throws with invalid input', () => {
+  it.each([
+    { options: undefined },
+    { options: null },
+    { options: {} },
+    { options: { directory: 123 } },
+    { options: { directory: '' } },
+    { options: { directory: './fixtures', needle: '' } },
+    { options: { directory: './fixtures', needle: 'valid', excludePaths: [123] } },
+    { options: { directory: './fixtures', needle: 'valid', excludePaths: [''] } },
+  ])('throws for invalid options: "%o"', ({ options }) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore - testing invalid input
-    expect(() => fastFindInFiles()).toThrowErrorMatchingInlineSnapshot(`"Invalid input: Missing directory / options"`)
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore - testing invalid input
-    expect(() => fastFindInFiles('.')).toThrowErrorMatchingInlineSnapshot(`"Invalid input: Missing needle"`)
+    expect(() => fastFindInFiles(options)).toThrowErrorMatchingSnapshot()
   })
 })

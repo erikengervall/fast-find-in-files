@@ -28,7 +28,6 @@ interface FastFindInFilesOptions {
    * Relative folder paths to exclude from the search.
    *
    * Requirements:
-   * - Must start with `./`
    * - Must not end with `/`
    */
   excludeFolderPaths?: string[]

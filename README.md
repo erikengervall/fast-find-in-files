@@ -1,8 +1,10 @@
 # Fast Find in Files
 
-`fast-find-in-files` recursively searches all files in selected directory and sub-directories for text matches using
-partial string matching or regular expressions. The library is built entirely in C++ and exposes its functionality using
-[node-addon-api](https://github.com/nodejs/node-addon-api).
+⚡️ Supercharge keyword searches in file systems with blazing speed powered by C++.
+
+Thanks to [node-addon-api](https://github.com/nodejs/node-addon-api) `fast-find-in-files` is able to provide a
+significantly faster search than other libraries. The library is built entirely in C++ and exposes its functionality
+using TypeScript.
 
 <p align="center">
   <img alt="fast-find-in-files logo" width="300px" src="https://raw.githubusercontent.com/erikengervall/fast-find-in-files/master/resources/img/logo.png">
@@ -51,7 +53,7 @@ console.log(result)
 
 # Development
 
-### Install dependencies
+## Install dependencies
 
 ```sh
 yarn install
@@ -69,14 +71,16 @@ yarn build
 yarn test
 ```
 
-## Release
+# Release
 
 1. Bump version in `package.json` & `lerna.json` (create PR -> merge)
 2. Create a new release on GitHub. This will also create a tag which will trigger the CI to publish a new version to npm
 
-## Documentation
+# Node Addon API
 
-Learn more about `fast-find-in-files` on the [official website](https://erikengervall.github.io/fast-find-in-files).
+A Native Addon is a binary compiled from C/C++.
+
+Native Addons compile into a [Dynamically Linked Library (DLL)](https://en.wikipedia.org/wiki/Dynamic-link_library).
 
 ## Contributing
 

@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fastFindInFiles throws for invalid options: "{
+  options: {
+    directory: './fixtures',
+    needle: 'valid',
+    excludeFolderPaths: [ '', [length]: 1 ]
+  }
+}" 1`] = `"Invalid input: options.excludeFolderPaths.excludeFolderPath must be nonempty string"`;
+
+exports[`fastFindInFiles throws for invalid options: "{
+  options: {
+    directory: './fixtures',
+    needle: 'valid',
+    excludeFolderPaths: [ 'some/path/', [length]: 1 ]
+  }
+}" 1`] = `"Invalid input: options.excludeFolderPaths.excludeFolderPath must not end with \\"/\\""`;
+
+exports[`fastFindInFiles throws for invalid options: "{
+  options: {
+    directory: './fixtures',
+    needle: 'valid',
+    excludeFolderPaths: [ 123, [length]: 1 ]
+  }
+}" 1`] = `"Invalid input: options.excludeFolderPaths.excludeFolderPath must be nonempty string"`;
+
+exports[`fastFindInFiles throws for invalid options: "{ options: { directory: '' } }" 1`] = `"Invalid input: Invalid or missing options.directory"`;
+
+exports[`fastFindInFiles throws for invalid options: "{ options: { directory: './fixtures', needle: '' } }" 1`] = `"Invalid input: Invalid or missing options.needle"`;
+
+exports[`fastFindInFiles throws for invalid options: "{ options: { directory: 123 } }" 1`] = `"Invalid input: Invalid or missing options.directory"`;
+
+exports[`fastFindInFiles throws for invalid options: "{ options: {} }" 1`] = `"Invalid input: Invalid or missing options.directory"`;
+
+exports[`fastFindInFiles throws for invalid options: "{ options: null }" 1`] = `"Invalid input: Missing options"`;
+
+exports[`fastFindInFiles throws for invalid options: "{ options: undefined }" 1`] = `"Invalid input: Missing options"`;

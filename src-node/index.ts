@@ -15,18 +15,61 @@ export interface FastFindInFiles {
   queryHits: QueryHit[]
 }
 
-const bindingWrapper = (directory: string, needle: string | RegExp): FastFindInFiles[] => {
-  if (!directory) {
-    throw new TypeError('Invalid input: Missing directory')
-  }
-
-  if (!needle) {
-    throw new TypeError('Invalid input: Missing needle')
-  }
-
-  const needleStr = needle instanceof RegExp ? needle.source : needle
-
-  return binding.exportedFn(directory, needleStr)
+interface FastFindInFilesOptions {
+  /**
+   * Absolute or relative directory path to search in.
+   */
+  directory: string
+  /**
+   * String or RegExp to search for.
+   */
+  needle: string | RegExp
+  /**
+   * Relative folder paths to exclude from the search.
+   *
+   * Requirements:
+   * - Must start with `./`
+   * - Must not end with `/`
+   */
+  excludeFolderPaths?: string[]
 }
 
-export { bindingWrapper as fastFindInFiles }
+function fastFindInFiles(options: FastFindInFilesOptions): FastFindInFiles[] {
+  if (!options) {
+    throw new TypeError('Invalid input: Missing options')
+  }
+
+  if (typeof options.directory !== 'string' || options.directory.length === 0) {
+    throw new TypeError('Invalid input: Invalid or missing options.directory')
+  }
+
+  if ((typeof options.needle !== 'string' || options.needle.length === 0) && !(options.needle instanceof RegExp)) {
+    throw new TypeError('Invalid input: Invalid or missing options.needle')
+  }
+
+  if (options.excludeFolderPaths) {
+    if (!Array.isArray(options.excludeFolderPaths)) {
+      throw new TypeError('Invalid input: options.excludeFolderPaths must be an array')
+    }
+
+    options.excludeFolderPaths.forEach(excludeFolderPath => {
+      if (typeof excludeFolderPath !== 'string' || excludeFolderPath.length === 0) {
+        throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must be nonempty string')
+      }
+
+      if (excludeFolderPath.endsWith('/')) {
+        throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must not end with "/"')
+      }
+
+      if (!excludeFolderPath.startsWith('./')) {
+        throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must start with "./"')
+      }
+    })
+  }
+
+  options.needle = typeof options.needle === 'string' ? options.needle : options.needle.source
+
+  return binding.exportedFn(options)
+}
+
+export { fastFindInFiles }

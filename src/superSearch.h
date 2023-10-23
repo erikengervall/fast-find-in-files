@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <string>
+
 struct QueryHit {
     std::string link;
     std::string line;
@@ -13,4 +16,4 @@ struct Result {
     std::vector<QueryHit> queryHits;
 };
 
-std::vector<Result> superSearch(std::string rootDirName, char const *userQuery);
+std::vector<Result> superSearch(std::string rootDirName, char const *userQuery, std::vector<std::string> excludeFolderPaths);

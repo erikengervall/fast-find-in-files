@@ -215,8 +215,6 @@ describe('fastFindInFiles', () => {
     { options: { directory: './fixtures', needle: 'valid', excludeFolderPaths: [''] } },
     { options: { directory: './fixtures', needle: 'valid', excludeFolderPaths: ['some/path/'] } },
   ])('throws for invalid options: "%o"', ({ options }) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore - testing invalid input
-    expect(() => fastFindInFiles(options)).toThrowErrorMatchingSnapshot()
+    expect(() => fastFindInFiles(options as any)).toThrowErrorMatchingSnapshot()
   })
 })

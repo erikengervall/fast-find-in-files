@@ -15,7 +15,7 @@ bool isOSDir(char const *dirName) {
 /**
  * Recursively search all sub-directories for files
  */
-void getFiles(char const *directory, std::vector<std::string> &filePaths, std::vector<std::string> &excludePaths) {
+void getFiles(char const *directory, std::vector<std::string> &filePaths, std::vector<std::string> &excludeFolderPaths) {
     if (DEV)
         std::cout << "FN > getFiles(" << directory << ")\n";
 
@@ -33,14 +33,16 @@ void getFiles(char const *directory, std::vector<std::string> &filePaths, std::v
                 std::string newDirectory = (std::string)directory + "/" + dirName;
                 
                 bool isExcluded = false;
-                for (const auto& path : excludePaths) {
-                    if (newDirectory == path) {
+                for (const auto& excludeFolderPath : excludeFolderPaths) {
+                    if (newDirectory == excludeFolderPath) {
+                        if (DEV)
+                            std::cout << "Excluding path > newDirectory(" << newDirectory << ") excludeFolderPath(" << excludeFolderPath << ")\n";
                         isExcluded = true;
                         break;
                     }
                 }
                 if (!isExcluded) {
-                    getFiles(newDirectory.c_str(), filePaths, excludePaths);
+                    getFiles(newDirectory.c_str(), filePaths, excludeFolderPaths);
                 }
             } else {
                 std::string fileName = ent->d_name;

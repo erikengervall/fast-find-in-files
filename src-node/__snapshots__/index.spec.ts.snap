@@ -4,17 +4,25 @@ exports[`fastFindInFiles throws for invalid options: "{
   options: {
     directory: './fixtures',
     needle: 'valid',
-    excludePaths: [ '', [length]: 1 ]
+    excludeFolderPaths: [ '', [length]: 1 ]
   }
-}" 1`] = `"Invalid input: options.excludePaths must be an array of strings"`;
+}" 1`] = `"Invalid input: options.excludeFolderPaths.excludeFolderPath must be nonempty string"`;
 
 exports[`fastFindInFiles throws for invalid options: "{
   options: {
     directory: './fixtures',
     needle: 'valid',
-    excludePaths: [ 123, [length]: 1 ]
+    excludeFolderPaths: [ 'some/path/', [length]: 1 ]
   }
-}" 1`] = `"Invalid input: options.excludePaths must be an array of strings"`;
+}" 1`] = `"Invalid input: options.excludeFolderPaths.excludeFolderPath must not end with \\"/\\""`;
+
+exports[`fastFindInFiles throws for invalid options: "{
+  options: {
+    directory: './fixtures',
+    needle: 'valid',
+    excludeFolderPaths: [ 123, [length]: 1 ]
+  }
+}" 1`] = `"Invalid input: options.excludeFolderPaths.excludeFolderPath must be nonempty string"`;
 
 exports[`fastFindInFiles throws for invalid options: "{ options: { directory: '' } }" 1`] = `"Invalid input: Invalid or missing options.directory"`;
 

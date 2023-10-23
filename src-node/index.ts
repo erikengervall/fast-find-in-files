@@ -16,9 +16,22 @@ export interface FastFindInFiles {
 }
 
 interface FastFindInFilesOptions {
+  /**
+   * Absolute or relative directory path to search in.
+   */
   directory: string
+  /**
+   * String or RegExp to search for.
+   */
   needle: string | RegExp
-  excludePaths?: string[]
+  /**
+   * Relative folder paths to exclude from the search.
+   *
+   * Requirements:
+   * - Must start with `./`
+   * - Must not end with `/`
+   */
+  excludeFolderPaths?: string[]
 }
 
 function fastFindInFiles(options: FastFindInFilesOptions): FastFindInFiles[] {
@@ -34,14 +47,24 @@ function fastFindInFiles(options: FastFindInFilesOptions): FastFindInFiles[] {
     throw new TypeError('Invalid input: Invalid or missing options.needle')
   }
 
-  if (options.excludePaths) {
-    if (!Array.isArray(options.excludePaths)) {
-      throw new TypeError('Invalid input: options.excludePaths must be an array')
+  if (options.excludeFolderPaths) {
+    if (!Array.isArray(options.excludeFolderPaths)) {
+      throw new TypeError('Invalid input: options.excludeFolderPaths must be an array')
     }
 
-    if (options.excludePaths.some(path => typeof path !== 'string' || path.length === 0)) {
-      throw new TypeError('Invalid input: options.excludePaths must be an array of strings')
-    }
+    options.excludeFolderPaths.forEach(excludeFolderPath => {
+      if (typeof excludeFolderPath !== 'string' || excludeFolderPath.length === 0) {
+        throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must be nonempty string')
+      }
+
+      if (excludeFolderPath.endsWith('/')) {
+        throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must not end with "/"')
+      }
+
+      if (!excludeFolderPath.startsWith('./')) {
+        throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must start with "./"')
+      }
+    })
   }
 
   options.needle = typeof options.needle === 'string' ? options.needle : options.needle.source

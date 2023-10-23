@@ -16,4 +16,4 @@ struct Result {
     std::vector<QueryHit> queryHits;
 };
 
-std::vector<Result> superSearch(std::string rootDirName, char const *userQuery, std::vector<std::string> excludePaths);
+std::vector<Result> superSearch(std::string rootDirName, char const *userQuery, std::vector<std::string> excludeFolderPaths);

@@ -28,7 +28,7 @@ import { fastFindInFiles } from 'fast-find-in-files'
 const directory = process.cwd()
 const needle = 'needle' // also supports string RegExp: 'needle*', and RegExp instances: new RegExp('needle*')
 
-const result = fastFindInFiles(directory, needle)
+const result = fastFindInFiles({ directory, needle })
 
 console.log(result)
 // [

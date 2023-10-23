@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 18.x
       - name: Print context 🎉
         env:
           GH_REF: ${{ github.ref }}
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 18.x
       - run: yarn prep
       - run: yarn lint
 
@@ -45,7 +45,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 18.x
       - run: yarn prep
       - run: yarn test
 
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org/
       - name: yarn publish
         env:

@@ -1,6 +1,10 @@
 # Fast Find in Files
 
-`fast-find-in-files` recursively searches all files in selected directory and sub-directories for text matches using partial string matching or regular expressions. The library is built entirely in C++ and exposes its functionality using [node-addon-api](https://github.com/nodejs/node-addon-api).
+⚡️ Supercharge keyword searches in file systems with blazing speed powered by C++.
+
+Thanks to [node-addon-api](https://github.com/nodejs/node-addon-api) `fast-find-in-files` is able to provide a
+significantly faster search than other libraries. The library is built entirely in C++ and exposes its functionality
+using TypeScript.
 
 <p align="center">
   <img alt="fast-find-in-files logo" width="300px" src="https://raw.githubusercontent.com/erikengervall/fast-find-in-files/master/resources/img/logo.png">
@@ -20,7 +24,7 @@
   </a>
 <p>
 
-## Example
+# Example
 
 ```ts
 import { fastFindInFiles } from 'fast-find-in-files'
@@ -47,43 +51,47 @@ console.log(result)
 // ]
 ```
 
-## Development
+# Development
 
-### Install dependencies
+## Install dependencies
 
 ```sh
 yarn install
 ```
 
-### Build
+## Build
 
 ```sh
 yarn build
 ```
 
-### Test
+## Test
 
 ```sh
 yarn test
 ```
 
-## Release
+# Release
 
-1. Bump version in `package.json` (create PR -> merge)
+1. Bump version in `package.json` & `lerna.json` (create PR -> merge)
 2. Create a new release on GitHub. This will also create a tag which will trigger the CI to publish a new version to npm
 
-## Documentation
+# Node Addon API
 
-Learn more about `fast-find-in-files` on the [official website](https://erikengervall.github.io/fast-find-in-files).
+A Native Addon is a binary compiled from C/C++.
+
+Native Addons compile into a [Dynamically Linked Library (DLL)](https://en.wikipedia.org/wiki/Dynamic-link_library).
 
 ## Contributing
 
-If you'd like to contribute, start by searching through the issues and pull requests to see whether someone else has raised a similar idea or question.
+If you'd like to contribute, start by searching through the issues and pull requests to see whether someone else has
+raised a similar idea or question.
 
 If you don't see your idea listed, and you think it fits into the goals of this guide, do one of the following:
 
 - If your contribution is **minor**, such as a typo fix, open a pull request.
-- If your contribution is **major**, such as a new feature, start by opening an issue first. That way, other people can weigh in on the discussion before you do any work.
+- If your contribution is **major**, such as a new feature, start by opening an issue first. That way, other people can
+  weigh in on the discussion before you do any work.
 
 ## License
 

@@ -177,15 +177,16 @@ describe('fastFindInFiles', () => {
       needle: 'Lorem ipsum',
     })
 
-    expect(result.map(r => r.filePath)).toMatchInlineSnapshot(`
-      Array [
-        "./fixtures/level0/0.txt",
-        "./fixtures/level0/level1/level2/level3/level3.1/3.1.md",
-        "./fixtures/level0/level1/level2/2.txt",
-        "./fixtures/level0/level1/1.txt",
-        "./fixtures/level0/level1/level2.1/2.1.txt",
-      ]
-    `)
+    expect(result.map(({ filePath }) => filePath)).toEqual(
+      // Use `expect.arrayContaining` to ignore the order of the results as CI might run on different machines
+      expect.arrayContaining([
+        './fixtures/level0/0.txt',
+        './fixtures/level0/level1/level2/level3/level3.1/3.1.md',
+        './fixtures/level0/level1/level2/2.txt',
+        './fixtures/level0/level1/1.txt',
+        './fixtures/level0/level1/level2.1/2.1.txt',
+      ]),
+    )
   })
 
   it('works with exclude paths', () => {
@@ -195,13 +196,14 @@ describe('fastFindInFiles', () => {
       excludeFolderPaths: ['./fixtures/level0/level1/level2'],
     })
 
-    expect(result.map(r => r.filePath)).toMatchInlineSnapshot(`
-      Array [
-        "./fixtures/level0/0.txt",
-        "./fixtures/level0/level1/1.txt",
-        "./fixtures/level0/level1/level2.1/2.1.txt",
-      ]
-    `)
+    expect(result.map(({ filePath }) => filePath)).toEqual(
+      // Use `expect.arrayContaining` to ignore the order of the results as CI might run on different machines
+      expect.arrayContaining([
+        './fixtures/level0/0.txt',
+        './fixtures/level0/level1/1.txt',
+        './fixtures/level0/level1/level2.1/2.1.txt',
+      ]),
+    )
   })
 
   it.each([

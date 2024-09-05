@@ -204,6 +204,19 @@ describe('fastFindInFiles', () => {
     )
   })
 
+  it('works with regexp exclude paths', () => {
+    const result = fastFindInFiles({
+      directory: './fixtures',
+      needle: 'Lorem ipsum',
+      excludeFolderPaths: [/level2/],
+    })
+
+    expect(result.map(({ filePath }) => filePath)).toEqual(
+      // Use `expect.arrayContaining` to ignore the order of the results as CI might run on different machines
+      expect.arrayContaining(['./fixtures/level0/0.txt', './fixtures/level0/level1/1.txt']),
+    )
+  })
+
   it.each([
     { options: undefined },
     { options: null },

@@ -25,12 +25,9 @@ interface FastFindInFilesOptions {
    */
   needle: string | RegExp
   /**
-   * Relative folder paths to exclude from the search.
-   *
-   * Requirements:
-   * - Must not end with `/`
+   * Relative folder paths or RegExp paths to exclude from the search.
    */
-  excludeFolderPaths?: string[]
+  excludeFolderPaths?: (string | RegExp)[]
 }
 
 function fastFindInFiles(options: FastFindInFilesOptions): FastFindInFiles[] {
@@ -51,7 +48,11 @@ function fastFindInFiles(options: FastFindInFilesOptions): FastFindInFiles[] {
       throw new TypeError('Invalid input: options.excludeFolderPaths must be an array')
     }
 
-    options.excludeFolderPaths.forEach((excludeFolderPath) => {
+    options.excludeFolderPaths = options.excludeFolderPaths.map((excludeFolderPath) => {
+      if (excludeFolderPath instanceof RegExp) {
+        return excludeFolderPath.source
+      }
+
       if (typeof excludeFolderPath !== 'string' || excludeFolderPath.length === 0) {
         throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must be nonempty string')
       }
@@ -59,6 +60,8 @@ function fastFindInFiles(options: FastFindInFilesOptions): FastFindInFiles[] {
       if (excludeFolderPath.endsWith('/')) {
         throw new TypeError('Invalid input: options.excludeFolderPaths.excludeFolderPath must not end with "/"')
       }
+
+      return `^${excludeFolderPath}$`
     })
   }
 

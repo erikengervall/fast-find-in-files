@@ -1,6 +1,6 @@
 {
   "name": "fast-find-in-files",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "fast-find-in-files recursively searches sub-directories for needle matches",
   "keywords": [
     "fast",

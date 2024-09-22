@@ -7,6 +7,7 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <regex>
 
 #include "constants.h"
 #include "getFiles.h"
@@ -39,7 +40,8 @@ void getFiles(char const *directory, std::vector<std::string> &filePaths, std::v
                 
                 bool isExcluded = false;
                 for (const auto& excludeFolderPath : excludeFolderPaths) {
-                    if (newDirectory == excludeFolderPath) {
+                    std::regex regexExcludeFolderPath(excludeFolderPath);
+                    if (std::regex_match(newDirectory, regexExcludeFolderPath, std::regex_constants::match_not_null)) {
                         if (DEV)
                             std::cout << "Excluding path > newDirectory(" << newDirectory << ") excludeFolderPath(" << excludeFolderPath << ")\n";
                         isExcluded = true;

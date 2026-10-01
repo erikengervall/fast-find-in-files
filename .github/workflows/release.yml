@@ -1,0 +1,123 @@
+# Every push to master updates a release pull request (version bump and CHANGELOG, from conventional commit messages).
+# Merging that pull request tags the release; this workflow then builds a binary per platform, tests each one, and
+# publishes to npm through trusted publishing (OIDC), so no npm token is stored in the repository.
+name: Release
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  release-please:
+    name: Release pull request
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  prebuild:
+    name: Prebuild ${{ matrix.target }}
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          # Linux builds run in Debian 11 (glibc 2.31) so the binary also loads on older distros, and in Alpine for musl.
+          - { target: linux-x64-glibc, os: ubuntu-24.04, image: 'node:22-bullseye' }
+          - { target: linux-arm64-glibc, os: ubuntu-24.04-arm, image: 'node:22-bullseye' }
+          - {
+              target: linux-x64-musl,
+              os: ubuntu-24.04,
+              image: 'node:22-alpine',
+              setup: 'apk add --no-cache python3 make g++ &&',
+            }
+          - {
+              target: linux-arm64-musl,
+              os: ubuntu-24.04-arm,
+              image: 'node:22-alpine',
+              setup: 'apk add --no-cache python3 make g++ &&',
+            }
+          - { target: darwin-arm64, os: macos-latest, arch: arm64, test: true }
+          # Cross-compiled on Apple silicon, so it is built but not tested here.
+          - { target: darwin-x64, os: macos-latest, arch: x64, test: false }
+          - { target: win32-x64, os: windows-latest, arch: x64, test: true }
+          - { target: win32-arm64, os: windows-11-arm, arch: arm64, test: true }
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+
+      - name: Build and test in ${{ matrix.image }}
+        if: matrix.image
+        run: >
+          docker run --rm -v "$PWD:/work" -w /work ${{ matrix.image }} sh -c "${{ matrix.setup }} yarn install
+          --frozen-lockfile --ignore-scripts && npx prebuildify --napi --strip --tag-libc && yarn build && yarn test"
+
+      - uses: actions/setup-node@v5
+        if: '!matrix.image'
+        with:
+          node-version: 24
+          cache: yarn
+      - name: Build
+        if: '!matrix.image'
+        run: |
+          yarn install --frozen-lockfile --ignore-scripts
+          npx prebuildify --napi --strip --arch ${{ matrix.arch }}
+      # --ignore-scripts skipped the source build, so the tests load the prebuilt binary, as an installed package would.
+      - name: Test the prebuilt binary
+        if: '!matrix.image && matrix.test'
+        run: |
+          yarn build
+          yarn test
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prebuild-${{ matrix.target }}
+          path: prebuilds/
+          if-no-files-found: error
+
+  publish:
+    name: Publish to npm
+    needs: [release-please, prebuild]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Trusted publishing and provenance
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24 # Ships npm 11, which trusted publishing needs (11.5.1 or later)
+          registry-url: https://registry.npmjs.org
+          cache: yarn
+      - run: yarn install --frozen-lockfile --ignore-scripts
+      - uses: actions/download-artifact@v5
+        with:
+          pattern: prebuild-*
+          path: prebuilds
+          merge-multiple: true
+      - run: yarn build
+      - name: Check every platform made it into the package
+        run: |
+          npm pack --dry-run 2>&1 | tee pack.txt
+          for target in linux-x64 linux-arm64 darwin-arm64 darwin-x64 win32-x64 win32-arm64; do
+            grep -q "prebuilds/$target/" pack.txt || { echo "Missing prebuild for $target"; exit 1; }
+          done
+      - run: yarn test
+      - run: npm publish

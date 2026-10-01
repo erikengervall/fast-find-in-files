@@ -1,0 +1,9 @@
+build
+dist
+prebuilds
+node_modules
+fixtures
+yarn.lock
+.vscode
+CHANGELOG.md
+.github/ISSUE_TEMPLATE

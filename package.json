@@ -1,6 +1,6 @@
 {
   "name": "fast-find-in-files",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Recursively search a directory's files for text or a RegExp, powered by a native C++ addon",
   "keywords": [
     "find",

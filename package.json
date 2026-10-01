@@ -61,7 +61,7 @@
     "eslint-config-prettier": "^10",
     "eslint-plugin-prettier": "^5",
     "jest": "^30",
-    "node-gyp": "^11",
+    "node-gyp": "^13.0.2",
     "prebuildify": "^6",
     "prettier": "^3",
     "ts-jest": "^29",

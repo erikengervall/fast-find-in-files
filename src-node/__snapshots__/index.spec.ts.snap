@@ -1,32 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`fastFindInFiles throws for invalid options: "{
-  options: {
-    directory: './fixtures',
-    needle: 'valid',
-    excludeFolderPaths: [ '', [length]: 1 ]
-  }
-}" 1`] = `"Invalid input: options.excludeFolderPaths.excludeFolderPath must be nonempty string"`;
-
-exports[`fastFindInFiles throws for invalid options: "{
-  options: {
-    directory: './fixtures',
-    needle: 'valid',
-    excludeFolderPaths: [ 'some/path/', [length]: 1 ]
-  }
-}" 1`] = `"Invalid input: options.excludeFolderPaths.excludeFolderPath must not end with "/""`;
-
-exports[`fastFindInFiles throws for invalid options: "{
-  options: {
-    directory: './fixtures',
-    needle: 'valid',
-    excludeFolderPaths: [ 123, [length]: 1 ]
-  }
-}" 1`] = `"Invalid input: options.excludeFolderPaths.excludeFolderPath must be nonempty string"`;
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`fastFindInFiles throws for invalid options: "{ options: { directory: '' } }" 1`] = `"Invalid input: Invalid or missing options.directory"`;
 
 exports[`fastFindInFiles throws for invalid options: "{ options: { directory: './fixtures', needle: '' } }" 1`] = `"Invalid input: Invalid or missing options.needle"`;
+
+exports[`fastFindInFiles throws for invalid options: "{ options: { directory: './fixtures', needle: 'two\\nlines' } }" 1`] = `"Invalid input: options.needle must not contain line breaks"`;
 
 exports[`fastFindInFiles throws for invalid options: "{ options: { directory: 123 } }" 1`] = `"Invalid input: Invalid or missing options.directory"`;
 
@@ -35,3 +13,17 @@ exports[`fastFindInFiles throws for invalid options: "{ options: {} }" 1`] = `"I
 exports[`fastFindInFiles throws for invalid options: "{ options: null }" 1`] = `"Invalid input: Missing options"`;
 
 exports[`fastFindInFiles throws for invalid options: "{ options: undefined }" 1`] = `"Invalid input: Missing options"`;
+
+exports[`fastFindInFiles throws for invalid options: "{\\n  options: { directory: './fixtures', needle: 'valid', includeHidden: 'yes' }\\n}" 1`] = `"Invalid input: options.includeHidden must be a boolean"`;
+
+exports[`fastFindInFiles throws for invalid options: "{\\n  options: {\\n    directory: './fixtures',\\n    needle: 'valid',\\n    excludeFolderPaths: 'level0'\\n  }\\n}" 1`] = `"Invalid input: options.excludeFolderPaths must be an array"`;
+
+exports[`fastFindInFiles throws for invalid options: "{\\n  options: {\\n    directory: './fixtures',\\n    needle: 'valid',\\n    excludeFolderPaths: [ '', [length]: 1 ]\\n  }\\n}" 1`] = `"Invalid input: options.excludeFolderPaths entries must be nonempty strings or RegExps"`;
+
+exports[`fastFindInFiles throws for invalid options: "{\\n  options: {\\n    directory: './fixtures',\\n    needle: 'valid',\\n    excludeFolderPaths: [ '/', [length]: 1 ]\\n  }\\n}" 1`] = `"Invalid input: options.excludeFolderPaths entries must be nonempty strings or RegExps"`;
+
+exports[`fastFindInFiles throws for invalid options: "{\\n  options: {\\n    directory: './fixtures',\\n    needle: 'valid',\\n    excludeFolderPaths: [ /(?<=a)b/ { [lastIndex]: 0 }, [length]: 1 ]\\n  }\\n}" 1`] = `"Invalid input: options.excludeFolderPaths uses lookbehind assertions, which are not supported"`;
+
+exports[`fastFindInFiles throws for invalid options: "{\\n  options: {\\n    directory: './fixtures',\\n    needle: 'valid',\\n    excludeFolderPaths: [ /a/u { [lastIndex]: 0 }, [length]: 1 ]\\n  }\\n}" 1`] = `"Invalid input: options.excludeFolderPaths uses the unsupported RegExp flag "u""`;
+
+exports[`fastFindInFiles throws for invalid options: "{\\n  options: {\\n    directory: './fixtures',\\n    needle: 'valid',\\n    excludeFolderPaths: [ 123, [length]: 1 ]\\n  }\\n}" 1`] = `"Invalid input: options.excludeFolderPaths entries must be nonempty strings or RegExps"`;

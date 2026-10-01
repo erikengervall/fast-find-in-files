@@ -35,6 +35,7 @@ jobs:
           - { os: ubuntu-latest, node: 26 }
           - { os: macos-latest, node: 24 }
           - { os: windows-latest, node: 24 }
+          - { os: windows-11-arm, node: 24 }
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5

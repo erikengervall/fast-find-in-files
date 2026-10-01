@@ -13,7 +13,17 @@
       },
       "msvs_settings": {
         "VCCLCompilerTool": { "ExceptionHandling": 1 }
-      }
+      },
+      "conditions": [
+        [
+          "OS=='win'",
+          {
+            # Node sets _HAS_EXCEPTIONS=0 on Windows, where std::exception keeps a pointer to its message instead of a
+            # copy, so every runtime_error message dangles. node-addon-api's except.gypi sets it back the same way.
+            "defines": ["_HAS_EXCEPTIONS=1"]
+          }
+        ]
+      ]
     }
   ]
 }

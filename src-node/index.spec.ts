@@ -5,6 +5,23 @@ import path from 'path'
 import { FastFindInFilesOptions, fastFindInFiles, fastFindInFilesAsync } from './index'
 
 const filePaths = (options: FastFindInFilesOptions) => fastFindInFiles(options).map(({ filePath }) => filePath)
+const hits = (options: FastFindInFilesOptions) =>
+  fastFindInFiles(options).flatMap(({ queryHits }) =>
+    queryHits.map(({ lineNumber, offset }) => `${lineNumber}:${offset}`),
+  )
+
+// Symlinks need privileges on Windows. Windows has no POSIX permissions, and root reads locked entries anyway.
+const canSymlink = process.platform !== 'win32'
+const canLock = canSymlink && process.getuid?.() !== 0
+
+function makeTree(files: Record<string, string | Buffer>): string {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'fast-find-in-files-'))
+  for (const [file, content] of Object.entries(files)) {
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
+    fs.writeFileSync(path.join(root, file), content)
+  }
+  return root
+}
 
 const LOREM_FILES = [
   './fixtures/level0/0.txt',
@@ -71,17 +88,96 @@ describe('fastFindInFiles', () => {
       ])
     })
 
-    it('reports every hit on a line with JS string offsets', () => {
-      const [result] = fastFindInFiles({ directory: './fixtures/level0/level1', needle: /Curabitur m\w+/g })
-
-      expect(result.queryHits.map(({ offset, line }) => line.slice(offset, offset + 16))).toEqual(['Curabitur mauris'])
-    })
-
     it('does not mutate the options it is given', () => {
       const options = { directory: './fixtures', needle: /Lorem/, excludeFolderPaths: [/level2/, 'level0/'] }
       fastFindInFiles(options)
 
       expect(options).toEqual({ directory: './fixtures', needle: /Lorem/, excludeFolderPaths: [/level2/, 'level0/'] })
+    })
+  })
+
+  describe('matching', () => {
+    let root: string
+
+    beforeAll(() => {
+      root = makeTree({ 'lines.txt': 'first line\nNunc a\nab ab ab\naaa\n' })
+    })
+
+    afterAll(() => fs.rmSync(root, { recursive: true, force: true }))
+
+    it.each<[string, string | RegExp]>([
+      ['text', 'ab'],
+      ['RegExp', /a[b]/],
+    ])('reports every hit on a line for a %s needle, each carrying the line', (_, needle) => {
+      const [result] = fastFindInFiles({ directory: root, needle })
+
+      expect(result.totalHits).toBe(3)
+      expect(result.queryHits).toEqual(
+        [0, 3, 6].map((offset) => ({
+          link: `${root}/lines.txt:3:${offset + 1}`,
+          line: 'ab ab ab',
+          lineNumber: 3,
+          offset,
+        })),
+      )
+    })
+
+    it.each<[string, string | RegExp]>([
+      ['text', 'aa'],
+      ['RegExp', /a{2}/],
+    ])('does not report overlapping matches for a %s needle', (_, needle) => {
+      expect(hits({ directory: root, needle })).toEqual(['4:0'])
+    })
+
+    it('treats ^ and $ as line boundaries anywhere in the file', () => {
+      expect(hits({ directory: root, needle: /^Nunc/ })).toEqual(['2:0'])
+      expect(hits({ directory: root, needle: /ab$/ })).toEqual(['3:6'])
+      expect(hits({ directory: root, needle: /^aaa$/ })).toEqual(['4:0'])
+    })
+
+    it('matches negative lookarounds per line', () => {
+      expect(hits({ directory: root, needle: /ab(?! ab)/ })).toEqual(['3:6'])
+      expect(hits({ directory: root, needle: /(?<!ab )ab/ })).toEqual(['3:0'])
+      expect(hits({ directory: root, needle: /a(?!\n)/ })).toEqual(['2:5', '3:0', '3:3', '3:6', '4:0', '4:1', '4:2'])
+    })
+
+    it('finds every hit regardless of the g and y flags, leaving the RegExp untouched', () => {
+      const sticky = /a[b]/y
+      const global = /a[b]/g
+
+      expect(hits({ directory: root, needle: sticky })).toEqual(['3:0', '3:3', '3:6'])
+      expect(hits({ directory: root, needle: global })).toEqual(['3:0', '3:3', '3:6'])
+      expect([sticky.lastIndex, global.lastIndex]).toEqual([0, 0])
+    })
+
+    it('skips zero-length matches', () => {
+      expect(hits({ directory: root, needle: /z*/ })).toEqual([])
+      expect(hits({ directory: root, needle: /a*/ })).toEqual(['2:5', '3:0', '3:3', '3:6', '4:0'])
+    })
+
+    it('matches a RegExp without special characters exactly like the same text', () => {
+      expect(fastFindInFiles({ directory: root, needle: /Nunc a/ })).toEqual(
+        fastFindInFiles({ directory: root, needle: 'Nunc a' }),
+      )
+      expect(hits({ directory: root, needle: /Nunc a/ })).toEqual(['2:0'])
+    })
+
+    it.each<[string, string | RegExp]>([
+      ['text', 'needle'],
+      ['RegExp', /ne{2}dle/],
+    ])('shares one line string across hits instead of copying it per hit, for a %s needle', (_, needle) => {
+      // A 1 MB line with 2,000 hits: copying the line per hit would cost about 2 GB of heap.
+      const directory = makeTree({ 'minified.js': 'needle'.concat('x'.repeat(494)).repeat(2000) })
+      try {
+        const before = process.memoryUsage().heapUsed
+        const [result] = fastFindInFiles({ directory, needle })
+        const growth = process.memoryUsage().heapUsed - before
+
+        expect(result.totalHits).toBe(2000)
+        expect(growth).toBeLessThan(100 * 1024 * 1024)
+      } finally {
+        fs.rmSync(directory, { recursive: true, force: true })
+      }
     })
   })
 
@@ -125,28 +221,41 @@ describe('fastFindInFiles', () => {
         './fixtures/level0/level1/1.txt',
       ])
     })
+
+    it('honors the i flag on an exclude RegExp', () => {
+      expect(filePaths({ directory: './fixtures', needle: 'Lorem ipsum', excludeFolderPaths: [/LEVEL2/i] })).toEqual([
+        './fixtures/level0/0.txt',
+        './fixtures/level0/level1/1.txt',
+      ])
+    })
+
+    it('excludes only the folder named, not a sibling sharing its prefix', () => {
+      expect(
+        filePaths({ directory: './fixtures', needle: 'Lorem ipsum', excludeFolderPaths: ['level0/level1/level2'] }),
+      ).toContain('./fixtures/level0/level1/level2.1/2.1.txt')
+    })
   })
 
   describe('file system edge cases', () => {
-    // Windows has no POSIX permissions or unprivileged symlinks, and root reads locked folders anyway.
-    const canLock = process.platform !== 'win32' && process.getuid?.() !== 0
     let root: string
 
     beforeAll(() => {
-      root = fs.mkdtempSync(path.join(os.tmpdir(), 'fast-find-in-files-'))
-      const write = (file: string, content: string | Buffer) => {
-        fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
-        fs.writeFileSync(path.join(root, file), content)
-      }
-      write('visible.txt', 'needle\r\nsecond needle line\r\n')
-      write('.env', 'needle in a dotfile')
-      write('.hidden/inside.txt', 'needle in a hidden folder')
-      write('binary.dat', Buffer.from([0x6e, 0x65, 0x65, 0x64, 0x6c, 0x65, 0x00, 0x01]))
-      write('unicode.txt', 'åäö 😀 needle')
+      root = makeTree({
+        'visible.txt': 'needle\r\nsecond needle line\r\n',
+        '.env': 'needle in a dotfile',
+        '.hidden/inside.txt': 'needle in a hidden folder',
+        'binary.dat': Buffer.from([0x6e, 0x65, 0x65, 0x64, 0x6c, 0x65, 0x00, 0x01]),
+        'unicode.txt': 'åäö 😀 needle',
+        'locked/secret.txt': 'needle behind a locked folder',
+        'unreadable.txt': 'needle in an unreadable file',
+      })
+      if (canSymlink) fs.symlinkSync(path.join(root, 'missing-target'), path.join(root, 'broken-link'))
       if (canLock) {
-        fs.symlinkSync(path.join(root, 'missing-target'), path.join(root, 'broken-link'))
-        write('locked/secret.txt', 'needle behind a locked folder')
         fs.chmodSync(path.join(root, 'locked'), 0o000)
+        fs.chmodSync(path.join(root, 'unreadable.txt'), 0o000)
+      } else {
+        fs.rmSync(path.join(root, 'locked'), { recursive: true })
+        fs.rmSync(path.join(root, 'unreadable.txt'))
       }
     })
 
@@ -155,12 +264,25 @@ describe('fastFindInFiles', () => {
       fs.rmSync(root, { recursive: true, force: true })
     })
 
-    it('skips hidden entries, binary files, broken links, and unreadable folders without failing', () => {
-      expect(filePaths({ directory: root, needle: 'needle' })).toEqual([`${root}/unicode.txt`, `${root}/visible.txt`])
-      expect(filePaths({ directory: root, needle: /needle/ })).toEqual([`${root}/unicode.txt`, `${root}/visible.txt`])
-    })
+    it.each<[string, string | RegExp]>([
+      ['text', 'needle'],
+      ['RegExp', /needle/],
+    ])(
+      'skips hidden entries, binary files, broken links, and unreadable files and folders for a %s needle',
+      async (_, needle) => {
+        const expected = [`${root}/unicode.txt`, `${root}/visible.txt`]
 
-    it('searches hidden entries with includeHidden', () => {
+        expect(filePaths({ directory: root, needle })).toEqual(expected)
+        expect((await fastFindInFilesAsync({ directory: root, needle })).map(({ filePath }) => filePath)).toEqual(
+          expected,
+        )
+      },
+    )
+
+    it('searches hidden entries with includeHidden, sync and async', async () => {
+      const options = { directory: root, needle: /needle/, includeHidden: true }
+
+      expect(await fastFindInFilesAsync(options)).toEqual(fastFindInFiles(options))
       expect(filePaths({ directory: root, needle: 'needle', includeHidden: true })).toEqual([
         `${root}/.env`,
         `${root}/.hidden/inside.txt`,
@@ -200,6 +322,27 @@ describe('fastFindInFiles', () => {
       expect(() => fastFindInFiles({ directory: path.join(root, 'visible.txt'), needle: 'x' })).toThrow(
         /Unable to read directory/,
       )
+    })
+
+    ;(canSymlink ? it : it.skip)('searches symlinked files but does not follow symlinked folders', () => {
+      const directory = makeTree({ 'real/target.txt': 'needle via a link' })
+      try {
+        fs.symlinkSync(path.join(directory, 'real/target.txt'), path.join(directory, 'linked.txt'))
+        fs.symlinkSync(path.join(directory, 'real'), path.join(directory, 'linked-folder'))
+
+        expect(filePaths({ directory, needle: 'needle' })).toEqual([
+          `${directory}/linked.txt`,
+          `${directory}/real/target.txt`,
+        ])
+      } finally {
+        fs.rmSync(directory, { recursive: true, force: true })
+      }
+    })
+
+    it('strips trailing slashes from directory without doubling the separator', () => {
+      const [first] = filePaths({ directory: `${root}//`, needle: 'needle' })
+
+      expect(first).toBe(`${root}/unicode.txt`)
     })
 
     it('throws a catchable error for an exclude pattern the native engine rejects', () => {
@@ -243,6 +386,9 @@ describe('fastFindInFilesAsync', () => {
   })
 
   it('rejects instead of throwing', async () => {
+    await expect(
+      fastFindInFilesAsync({ directory: './fixtures', needle: 'x', excludeFolderPaths: [/{/] }),
+    ).rejects.toThrow(/Invalid exclude pattern/)
     await expect(fastFindInFilesAsync({ directory: './fixtures/nope', needle: 'x' })).rejects.toThrow(
       /Unable to read directory/,
     )

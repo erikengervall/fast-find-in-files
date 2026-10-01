@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/erikengervall/fast-find-in-files/compare/v2.0.0...v2.0.1) (2026-10-01)
+
+
+### Bug Fixes
+
+* keep error messages intact on Windows ([#74](https://github.com/erikengervall/fast-find-in-files/issues/74)) ([6b6c42f](https://github.com/erikengervall/fast-find-in-files/commit/6b6c42f147133db078699f0a64ca46c1c5edad68))
+
 ## [2.0.0](https://github.com/erikengervall/fast-find-in-files/compare/v1.0.5...v2.0.0) (2026-10-01)
 
 
